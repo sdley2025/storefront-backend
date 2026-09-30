@@ -188,6 +188,7 @@
                             <goal>read-project-properties</goal>
                         </goals>
                         <configuration>
+                            <quiet>true</quiet>
                             <files>
                                 <file>${project.basedir}/.env</file>
                             </files>

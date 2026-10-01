@@ -192,6 +192,22 @@ Flyway migration files are in `src/main/resources/db/migration/`. They run autom
 
 Avoid `flyway:clean` except against disposable databases; it drops the schema.
 
+## Deploying to Railway
+
+Add a MySQL service to the project, then set these variables on the application service (replace `MySQL` with your database service name if it differs):
+
+| Variable | Value |
+| --- | --- |
+| `SPRING_PROFILES_ACTIVE` | `prod` |
+| `DB_URL` | `jdbc:mysql://${{MySQL.MYSQLHOST}}:${{MySQL.MYSQLPORT}}/${{MySQL.MYSQLDATABASE}}` |
+| `DB_USERNAME` | `${{MySQL.MYSQLUSER}}` |
+| `DB_PASSWORD` | `${{MySQL.MYSQLPASSWORD}}` |
+| `FLYWAY_USER` | `${{MySQL.MYSQLUSER}}` (or a dedicated migration user) |
+| `FLYWAY_PASSWORD` | `${{MySQL.MYSQLPASSWORD}}` |
+| `JWT_SECRET`, `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET_KEY`, `WEBSITE_URL` | Production values |
+
+Do not build `DB_URL` from Railway's `mysql://user:pass@host/db` URL variables: they are not JDBC URLs, and an unresolved reference leaves `DB_URL` empty, which fails startup with "Failed to determine a suitable driver class". The application listens on Railway's `PORT` (defaults to `8080`).
+
 ## Security notes
 
 - Passwords supplied during user registration are encoded with BCrypt.

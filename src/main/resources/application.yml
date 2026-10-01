@@ -13,6 +13,8 @@ spring:
   flyway:
     user: ${FLYWAY_USER}
     password: ${FLYWAY_PASSWORD}
+server:
+  port: ${PORT:8080}
 stripe:
     secret-key: ${STRIPE_SECRET_KEY:your-stripe-api-key-here}
     webhook-secret-key: ${STRIPE_WEBHOOK_SECRET_KEY:your-stripe-webhook-secret-here}
